@@ -49,3 +49,4 @@
 - fix change 9
 - fix change 10
 - enhancement change 1
+- feat change 2
