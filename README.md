@@ -67,3 +67,4 @@
 - docs change 3
 - feat change 4
 - enhancement change 5
+- fix change 1
