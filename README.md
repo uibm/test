@@ -85,3 +85,4 @@
 - docs change 4
 - docs change 5
 - fix change 6
+- docs change 7
