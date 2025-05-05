@@ -24,3 +24,4 @@
 - fix change 1
 - enhancement change 2
 - feat change 3
+- feat change 4
