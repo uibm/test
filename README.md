@@ -8,3 +8,4 @@
 - test change 3
 - docs change 4
 - test change 5
+- fix change 6
