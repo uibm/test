@@ -16,3 +16,4 @@
 - feat change 1
 - docs change 1
 - test change 2
+- fix change 3
