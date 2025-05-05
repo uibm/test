@@ -37,7 +37,9 @@ jobs:
 
       - name: Push changes
         run: |
+          git pull --rebase origin main
           git push origin main
+
 
   update-changelog:
     needs: generate-commits
@@ -75,6 +77,7 @@ jobs:
           rm temp_changelog.md
           git add CHANGELOG.md
           git commit -m "chore: update CHANGELOG.md"
+          git pull --rebase origin main
           git push origin main
 
   bump-version:
@@ -122,6 +125,7 @@ jobs:
           git add version/version.go
           git commit -m "chore: bump version to ${{ steps.version.outputs.new_version }}"
           git tag ${{ steps.version.outputs.new_version }}
+          git pull --rebase origin main
           git push origin main --tags
 
   create-release:
