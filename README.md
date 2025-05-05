@@ -19,3 +19,4 @@
 - fix change 3
 - fix change 4
 - docs change 5
+- fix change 1
