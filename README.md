@@ -12,3 +12,4 @@
 - enhancement change 7
 - fix change 8
 - fix change 9
+- enhancement change 10
