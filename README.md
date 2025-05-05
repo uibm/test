@@ -95,3 +95,4 @@
 - docs change 4
 - feat change 5
 - test change 6
+- fix change 7
