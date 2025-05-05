@@ -82,3 +82,4 @@
 - fix change 1
 - enhancement change 2
 - enhancement change 3
+- docs change 4
