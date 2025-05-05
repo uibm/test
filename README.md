@@ -58,3 +58,4 @@
 - fix change 4
 - test change 5
 - feat change 6
+- enhancement change 7
