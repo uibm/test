@@ -14,3 +14,4 @@
 - fix change 9
 - enhancement change 10
 - feat change 1
+- docs change 1
