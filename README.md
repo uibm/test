@@ -26,3 +26,4 @@
 - feat change 3
 - feat change 4
 - fix change 5
+- feat change 6
