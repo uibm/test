@@ -122,14 +122,18 @@ jobs:
       - name: Update version.go
         run: |
           mkdir -p version
-          echo "package version" > version/version.go
-          echo "" >> version/version.go
-          echo "const Version = \"${{ steps.version.outputs.new_version }}\"" >> version/version.go
-          git add version/version.go
-          git commit -m "chore: bump version to ${{ steps.version.outputs.new_version }}"
-          git tag ${{ steps.version.outputs.new_version }}
-          git pull --rebase origin main
-          git push origin main --tags
+          CURRENT_VERSION_FILE="version/version.go"
+          NEW_CONTENT="package version\n\nconst Version = \"$NEW_VERSION\""
+          
+          # Check if version.go needs to be updated
+          if [[ ! -f "$CURRENT_VERSION_FILE" || "$(cat $CURRENT_VERSION_FILE)" != "$(echo -e $NEW_CONTENT)" ]]; then
+            echo -e "$NEW_CONTENT" > "$CURRENT_VERSION_FILE"
+            git add "$CURRENT_VERSION_FILE"
+            git commit -m "chore: bump version to $NEW_VERSION"
+            git tag $NEW_VERSION
+          else
+            echo "✅ version.go is already up-to-date with $NEW_VERSION"
+          fi
 
   create-release:
     needs: bump-version
