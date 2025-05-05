@@ -80,3 +80,4 @@
 - test change 3
 - docs change 4
 - fix change 1
+- enhancement change 2
