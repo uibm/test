@@ -39,3 +39,4 @@
 - enhancement change 8
 - feat change 9
 - docs change 1
+- docs change 2
