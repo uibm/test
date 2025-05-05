@@ -114,7 +114,8 @@ jobs:
             PATCH=$((PATCH + 1))
           fi
           NEW_VERSION="v$MAJOR.$MINOR.$PATCH"
-          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
+          echo "::set-output name=new_version::$NEW_VERSION"
 
       - name: Update version.go
         run: |
