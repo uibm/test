@@ -88,3 +88,4 @@
 - docs change 7
 - docs change 8
 - feat change 1
+- enhancement change 2
