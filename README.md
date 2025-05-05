@@ -74,3 +74,4 @@
 - enhancement change 1
 - docs change 2
 - enhancement change 1
+- fix change 2
