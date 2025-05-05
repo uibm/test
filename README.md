@@ -30,3 +30,4 @@
 - fix change 7
 - docs change 1
 - enhancement change 1
+- enhancement change 2
