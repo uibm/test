@@ -34,3 +34,4 @@
 - enhancement change 3
 - enhancement change 4
 - feat change 5
+- feat change 6
