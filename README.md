@@ -31,3 +31,4 @@
 - docs change 1
 - enhancement change 1
 - enhancement change 2
+- enhancement change 3
