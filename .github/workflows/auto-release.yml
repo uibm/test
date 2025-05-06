@@ -1,154 +1,154 @@
-name: Automated Commits and Releases
+# name: Automated Commits and Releases
 
-on:
-  schedule:
-    - cron: '0 * * * *' # Runs every hour
-  workflow_dispatch:
+# on:
+#   schedule:
+#     - cron: '0 * * * *' # Runs every hour
+#   workflow_dispatch:
 
-permissions:
-  contents: write
-  issues: write
-  pull-requests: write
+# permissions:
+#   contents: write
+#   issues: write
+#   pull-requests: write
 
-jobs:
-  generate-commits:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+# jobs:
+#   generate-commits:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
 
-      - name: Set up Git
-        run: |
-          git config --global user.name "Ujjwal Kumar"
-          git config --global user.email "ujjwal.kumar1@ibm.com"
+#       - name: Set up Git
+#         run: |
+#           git config --global user.name "Ujjwal Kumar"
+#           git config --global user.email "ujjwal.kumar1@ibm.com"
 
-      - name: Generate random commits
-        run: |
-          COMMIT_TYPES=("feat" "fix" "docs" "test" "enhancement")
-          NUM_COMMITS=$((RANDOM % 10 + 1))
-          for i in $(seq 1 $NUM_COMMITS); do
-            TYPE=${COMMIT_TYPES[$RANDOM % ${#COMMIT_TYPES[@]}]}
-            echo "- $TYPE change $i" >> README.md
-            git add README.md
-            git commit -m "$TYPE: dummy change $i"
-          done
+#       - name: Generate random commits
+#         run: |
+#           COMMIT_TYPES=("feat" "fix" "docs" "test" "enhancement")
+#           NUM_COMMITS=$((RANDOM % 10 + 1))
+#           for i in $(seq 1 $NUM_COMMITS); do
+#             TYPE=${COMMIT_TYPES[$RANDOM % ${#COMMIT_TYPES[@]}]}
+#             echo "- $TYPE change $i" >> README.md
+#             git add README.md
+#             git commit -m "$TYPE: dummy change $i"
+#           done
 
-      - name: Push changes
-        run: |
-          git pull --rebase origin main
-          git push origin main
+#       - name: Push changes
+#         run: |
+#           git pull --rebase origin main
+#           git push origin main
 
 
-  update-changelog:
-    needs: generate-commits
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+#   update-changelog:
+#     needs: generate-commits
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
 
-      - name: Set up Git
-        run: |
-          git config --global user.name "Ujjwal Kumar"
-          git config --global user.email "ujjwal.kumar1@ibm.com"
+#       - name: Set up Git
+#         run: |
+#           git config --global user.name "Ujjwal Kumar"
+#           git config --global user.email "ujjwal.kumar1@ibm.com"
 
-      - name: Generate CHANGELOG.md
-        run: |
-          LAST_TAG=$(git describe --tags --abbrev=0 || echo "")
-          if [ -z "$LAST_TAG" ]; then
-            RANGE=""
-          else
-            RANGE="$LAST_TAG..HEAD"
-          fi
-          DATE=$(date +"%b %d, %Y")
-          VERSION="Unreleased"
-          echo "# $VERSION ($DATE)" > temp_changelog.md
-          echo "" >> temp_changelog.md
-          for TYPE in "feat:Features" "enhancement:Enhancements" "fix:Bug Fixes" "test:Test" "docs:Documentation"; do
-            IFS=":" read -r PREFIX HEADER <<< "$TYPE"
-            echo "## $HEADER" >> temp_changelog.md
-            git log $RANGE --pretty=format:"%s" | grep "^$PREFIX" | sed "s/^$PREFIX: /- /" >> temp_changelog.md || echo "" >> temp_changelog.md
-            echo "" >> temp_changelog.md
-          done
-          cat temp_changelog.md >> CHANGELOG.md
-          rm temp_changelog.md
-          git add CHANGELOG.md
-          git commit -m "chore: update CHANGELOG.md"
-          git pull --rebase origin main
-          git push origin main
+#       - name: Generate CHANGELOG.md
+#         run: |
+#           LAST_TAG=$(git describe --tags --abbrev=0 || echo "")
+#           if [ -z "$LAST_TAG" ]; then
+#             RANGE=""
+#           else
+#             RANGE="$LAST_TAG..HEAD"
+#           fi
+#           DATE=$(date +"%b %d, %Y")
+#           VERSION="Unreleased"
+#           echo "# $VERSION ($DATE)" > temp_changelog.md
+#           echo "" >> temp_changelog.md
+#           for TYPE in "feat:Features" "enhancement:Enhancements" "fix:Bug Fixes" "test:Test" "docs:Documentation"; do
+#             IFS=":" read -r PREFIX HEADER <<< "$TYPE"
+#             echo "## $HEADER" >> temp_changelog.md
+#             git log $RANGE --pretty=format:"%s" | grep "^$PREFIX" | sed "s/^$PREFIX: /- /" >> temp_changelog.md || echo "" >> temp_changelog.md
+#             echo "" >> temp_changelog.md
+#           done
+#           cat temp_changelog.md >> CHANGELOG.md
+#           rm temp_changelog.md
+#           git add CHANGELOG.md
+#           git commit -m "chore: update CHANGELOG.md"
+#           git pull --rebase origin main
+#           git push origin main
 
-  bump-version:
-    needs: update-changelog
-    runs-on: ubuntu-latest
-    outputs:
-        new_version: ${{ steps.version.outputs.new_version }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+#   bump-version:
+#     needs: update-changelog
+#     runs-on: ubuntu-latest
+#     outputs:
+#         new_version: ${{ steps.version.outputs.new_version }}
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
 
-      - name: Set up Git
-        run: |
-          git config --global user.name "Ujjwal Kumar"
-          git config --global user.email "ujjwal.kumar1@ibm.com"
+#       - name: Set up Git
+#         run: |
+#           git config --global user.name "Ujjwal Kumar"
+#           git config --global user.email "ujjwal.kumar1@ibm.com"
 
-      - name: Determine next version
-        id: version
-        run: |
-          LAST_TAG=$(git describe --tags --abbrev=0 || echo "v0.0.0")
-          VERSION_PARTS=(${LAST_TAG#v})
-          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION_PARTS"
-          CURRENT_DATE=$(date +%s)
-          MONTH_START=$(date -d "$(date +%Y-%m-01)" +%s)
-          WEEK_START=$(date -d "last sunday" +%s)
-          if [ "$CURRENT_DATE" -ge "$MONTH_START" ]; then
-            MAJOR=$((MAJOR + 1))
-            MINOR=0
-            PATCH=0
-          elif [ "$CURRENT_DATE" -ge "$WEEK_START" ]; then
-            MINOR=$((MINOR + 1))
-            PATCH=0
-          else
-            PATCH=$((PATCH + 1))
-          fi
-          NEW_VERSION="v$MAJOR.$MINOR.$PATCH"
-          echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
-          echo "::set-output name=new_version::$NEW_VERSION"
+#       - name: Determine next version
+#         id: version
+#         run: |
+#           LAST_TAG=$(git describe --tags --abbrev=0 || echo "v0.0.0")
+#           VERSION_PARTS=(${LAST_TAG#v})
+#           IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION_PARTS"
+#           CURRENT_DATE=$(date +%s)
+#           MONTH_START=$(date -d "$(date +%Y-%m-01)" +%s)
+#           WEEK_START=$(date -d "last sunday" +%s)
+#           if [ "$CURRENT_DATE" -ge "$MONTH_START" ]; then
+#             MAJOR=$((MAJOR + 1))
+#             MINOR=0
+#             PATCH=0
+#           elif [ "$CURRENT_DATE" -ge "$WEEK_START" ]; then
+#             MINOR=$((MINOR + 1))
+#             PATCH=0
+#           else
+#             PATCH=$((PATCH + 1))
+#           fi
+#           NEW_VERSION="v$MAJOR.$MINOR.$PATCH"
+#           echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
+#           echo "::set-output name=new_version::$NEW_VERSION"
 
-      - name: Update version.go
-        run: |
-          mkdir -p version
-          CURRENT_VERSION_FILE="version/version.go"
-          NEW_CONTENT="package version\n\nconst Version = \"$NEW_VERSION\""
+#       - name: Update version.go
+#         run: |
+#           mkdir -p version
+#           CURRENT_VERSION_FILE="version/version.go"
+#           NEW_CONTENT="package version\n\nconst Version = \"$NEW_VERSION\""
           
-          # Check if version.go needs to be updated
-          if [[ ! -f "$CURRENT_VERSION_FILE" || "$(cat $CURRENT_VERSION_FILE)" != "$(echo -e $NEW_CONTENT)" ]]; then
-            echo -e "$NEW_CONTENT" > "$CURRENT_VERSION_FILE"
-            git add "$CURRENT_VERSION_FILE"
-            git commit -m "chore: bump version to $NEW_VERSION"
-            git tag $NEW_VERSION
-          else
-            echo "✅ version.go is already up-to-date with $NEW_VERSION"
-          fi
+#           # Check if version.go needs to be updated
+#           if [[ ! -f "$CURRENT_VERSION_FILE" || "$(cat $CURRENT_VERSION_FILE)" != "$(echo -e $NEW_CONTENT)" ]]; then
+#             echo -e "$NEW_CONTENT" > "$CURRENT_VERSION_FILE"
+#             git add "$CURRENT_VERSION_FILE"
+#             git commit -m "chore: bump version to $NEW_VERSION"
+#             git tag $NEW_VERSION
+#           else
+#             echo "✅ version.go is already up-to-date with $NEW_VERSION"
+#           fi
 
-  create-release:
-    needs: bump-version
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+#   create-release:
+#     needs: bump-version
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ needs.bump-version.outputs.new_version }}
-          name: Release ${{ needs.bump-version.outputs.new_version }}
-          body_path: CHANGELOG.md
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       - name: Create GitHub Release
+#         uses: softprops/action-gh-release@v1
+#         with:
+#           tag_name: ${{ needs.bump-version.outputs.new_version }}
+#           name: Release ${{ needs.bump-version.outputs.new_version }}
+#           body_path: CHANGELOG.md
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
