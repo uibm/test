@@ -1,28 +1,26 @@
-# name: Automated Commits and Releases
+name: Automated Commits and Releases
 
-# on:
-#   schedule:
-#     - cron: '0 * * * *' # Runs every hour
-#   workflow_dispatch:
+on:
+  workflow_dispatch:
 
-# permissions:
-#   contents: write
-#   issues: write
-#   pull-requests: write
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
 
-# jobs:
-#   generate-commits:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v4
-#         with:
-#           fetch-depth: 0
+jobs:
+  generate-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-#       - name: Set up Git
-#         run: |
-#           git config --global user.name "Ujjwal Kumar"
-#           git config --global user.email "ujjwal.kumar1@ibm.com"
+      - name: Set up Git
+        run: |
+          git config --global user.name "Ujjwal Kumar"
+          git config --global user.email "ujjwal.kumar1@ibm.com"
 
 #       - name: Generate random commits
 #         run: |
